@@ -16,7 +16,7 @@ WORKDIR /
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install --yes --no-install-recommends sudo ca-certificates git wget curl bash libgl1 libx11-6 software-properties-common  cmake -y &&\
-    wget https://mirrors.bfsu.edu.cn/anaconda/archive/Anaconda3-2022.10-Linux-x86_64.sh --no-check-certificate && \
+    wget  --quiet https://mirrors.bfsu.edu.cn/anaconda/archive/Anaconda3-2022.10-Linux-x86_64.sh --no-check-certificate && \
     chmod 777 Anaconda3-2022.10-Linux-x86_64.sh && \
     bash Anaconda3-2022.10-Linux-x86_64.sh -b -p /usr/share/anaconda3 && \
     rm Anaconda3-2022.10-Linux-x86_64.sh && \
@@ -26,10 +26,11 @@ RUN apt-get update -y && \
 
 ENV CONDA_DIR /usr/share/anaconda3
 ENV PATH=$CONDA_DIR/bin:$PATH
-RUN conda init bash && \
-    conda activate geneface && \
-    conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
-    conda install -c bottler nvidiacub -y && \
+RUN /usr/share/anaconda3/bin/conda init bash && \
+    /usr/share/anaconda3/bin/conda create -n geneface python=3.9.16 -y && \
+    /usr/share/anaconda3/bin/conda activate geneface && \
+    /usr/share/anaconda3/bin/conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
+    /usr/share/anaconda3/bin/conda install -c bottler nvidiacub -y && \
 
 
 
