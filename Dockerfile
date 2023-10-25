@@ -26,11 +26,15 @@ RUN apt-get update -y && \
 
 ENV CONDA_DIR /usr/share/anaconda3
 ENV PATH=$CONDA_DIR/bin:$PATH
-RUN /usr/share/anaconda3/bin/conda init bash && \
-    /usr/share/anaconda3/bin/conda create -n geneface python=3.9.16 -y && \
-    /usr/share/anaconda3/bin/conda activate geneface && \
-    /usr/share/anaconda3/bin/conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
-    /usr/share/anaconda3/bin/conda install -c bottler nvidiacub -y && \
+RUN ls /usr/share/ && \
+    ls /usr/share/anaconda3/ && \
+    ls /usr/share/anaconda3/bin/ && \
+    ls /usr/share/anaconda3/condabin/ && \
+    /usr/share/anaconda3/condabin/conda init bash && \
+    /usr/share/anaconda3/condabin/conda create -n geneface python=3.9.16 -y && \
+    /usr/share/anaconda3/condabin/conda activate geneface && \
+    /usr/share/anaconda3/condabin/conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
+    /usr/share/anaconda3/condabin/conda install -c bottler nvidiacub -y && \
 
 
 
