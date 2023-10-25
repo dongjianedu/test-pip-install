@@ -7,7 +7,6 @@ ld_impl_linux-64==2.38
 libgcc-ng==11.2.0
 gmp==6.2.1
 libunistring==0.9.10
-_openmp_mutex==5.1
 libtasn1==4.16.0
 nettle==3.7.3
 libgomp==11.2.0
