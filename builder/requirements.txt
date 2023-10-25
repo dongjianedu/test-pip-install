@@ -1,7 +1,7 @@
 # Required Python packages get listed here, one per line.
 # Reccomended to lock the version number to avoid unexpected changes.
 
-openh264==2.1.1
+
 pytorch3d==0.7.2
 ld_impl_linux-64==2.38
 libgcc-ng==11.2.0
