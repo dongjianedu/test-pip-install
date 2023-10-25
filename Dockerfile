@@ -27,7 +27,12 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 RUN echo "ls /opt/conda" && \
     ls /opt/conda && \
     echo "ls /opt/conda/bin" && \
-    ls /opt/conda/bin
+    ls /opt/conda/bin && \
+    conda init bash && \
+    conda create -n geneface python=3.9.16 -y && \
+    conda activate geneface && \
+    conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
+    conda install -c bottler nvidiacub -y
 
 
 
