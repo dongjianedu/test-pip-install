@@ -16,13 +16,9 @@ WORKDIR /
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install --yes --no-install-recommends sudo ca-certificates  wget build-essential  bash  -y &&\
-    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
-    chmod 777 Anaconda3-2022.10-Linux-x86_64.sh && \
-    bash Anaconda3-2022.10-Linux-x86_64.sh -b -p /usr/share/anaconda3 && \
-    rm Anaconda3-2022.10-Linux-x86_64.sh && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* \
+    rm -rf /var/lib/apt/lists/*
 
 ENV CONDA_DIR /opt/conda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
