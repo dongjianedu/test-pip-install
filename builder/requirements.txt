@@ -2,17 +2,7 @@
 # Reccomended to lock the version number to avoid unexpected changes.
 
 
-pytorch3d==0.7.2
-ld_impl_linux-64==2.38
-libgcc-ng==11.2.0
-gmp==6.2.1
-libunistring==0.9.10
-libtasn1==4.16.0
-nettle==3.7.3
-libgomp==11.2.0
-ncurses==6.4
-nvidiacub==1.10.0
-readline==8.2
-libidn2==2.3.2
-tensorflow-io-gcs-filesystem==0.32.0
-
+bottler
+nvidiacub
+pytorch3d
+ffmpeg

@@ -22,10 +22,10 @@ RUN apt-get update -y && \
 
 # Add the deadsnakes PPA and install Python 3.10
 RUN add-apt-repository ppa:deadsnakes/ppa -y && \
-    apt-get install python3.10-dev python3.10-venv python3-pip -y --no-install-recommends  && \
-    ln -s /usr/bin/python3.10 /usr/bin/python && \
+    apt-get install python3.9.16-dev python3.9.16-venv python3-pip -y --no-install-recommends  && \
+    ln -s /usr/bin/python3.9.16 /usr/bin/python && \
     rm /usr/bin/python3 && \
-    ln -s /usr/bin/python3.10 /usr/bin/python3 && \
+    ln -s /usr/bin/python3.9.16 /usr/bin/python3 && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
