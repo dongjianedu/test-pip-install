@@ -26,9 +26,13 @@ RUN apt-get update -y && \
 
 ENV CONDA_DIR /usr/share/anaconda3
 ENV PATH=$CONDA_DIR/bin:$PATH
-RUN ls /usr/share/ && \
+RUN echo "ls /usr/share/" && \
+    ls /usr/share/ && \
+    echo "ls /usr/share/anaconda3/" && \
     ls /usr/share/anaconda3/ && \
+    echo "ls /usr/share/anaconda3/bin/" && \
     ls /usr/share/anaconda3/bin/ && \
+    echo "ls /usr/share/anaconda3/condabin/" && \
     ls /usr/share/anaconda3/condabin/ && \
     /usr/share/anaconda3/condabin/conda init bash && \
     /usr/share/anaconda3/condabin/conda create -n geneface python=3.9.16 -y && \
