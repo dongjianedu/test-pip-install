@@ -14,7 +14,6 @@ ncurses==6.4
 nvidiacub==1.10.0
 readline==8.2
 libidn2==2.3.2
-libstdcxx-ng=11.2.0
 gnutls=3.6.15
 freqencoder==0.0.0
 gridencoder==0.0.0
