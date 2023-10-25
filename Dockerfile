@@ -16,31 +16,43 @@ WORKDIR /
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install --yes --no-install-recommends sudo ca-certificates git wget curl bash libgl1 libx11-6 software-properties-common  cmake -y &&\
+    wget https://mirrors.bfsu.edu.cn/anaconda/archive/Anaconda3-2022.10-Linux-x86_64.sh --no-check-certificate && \
+    chmod 777 Anaconda3-2022.10-Linux-x86_64.sh && \
+    bash Anaconda3-2022.10-Linux-x86_64.sh -b -p /usr/share/anaconda3 && \
+    rm Anaconda3-2022.10-Linux-x86_64.sh && \
+    echo "export PATH=/usr/share/anaconda3/bin:$PATH" >> ~/.bashrc && \
+    source ~/.bashrc && \
+    conda init bash && \
+    conda update -n base -c defaults conda && \
+    conda create -n geneface python=3.9.16 -y && \
+    conda activate geneface && \
+    conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
+    conda install -c bottler nvidiacub -y && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Add the deadsnakes PPA and install Python 3.10
-RUN add-apt-repository ppa:deadsnakes/ppa -y && \
-    apt-get install python3.10-dev python3.10-venv python3-pip -y --no-install-recommends  && \
-    ln -s /usr/bin/python3.10 /usr/bin/python && \
-    rm /usr/bin/python3 && \
-    ln -s /usr/bin/python3.10 /usr/bin/python3 && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+#RUN add-apt-repository ppa:deadsnakes/ppa -y && \
+#    apt-get install python3.10-dev python3.10-venv python3-pip -y --no-install-recommends  && \
+#    ln -s /usr/bin/python3.10 /usr/bin/python && \
+#    rm /usr/bin/python3 && \
+#    ln -s /usr/bin/python3.10 /usr/bin/python3 && \
+#    apt-get autoremove -y && \
+#    apt-get clean -y && \
+#    rm -rf /var/lib/apt/lists/*
 
 # Download and install pip
-RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
-    python get-pip.py && \
-    rm get-pip.py
+#RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+#    python get-pip.py && \
+#    rm get-pip.py
 
 # Install Python dependencies (Worker Template)
-COPY builder/requirements.txt /requirements.txt
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --upgrade pip && \
-    pip install -r /requirements.txt --no-cache-dir   && \
-    rm /requirements.txt
+#COPY builder/requirements.txt /requirements.txt
+#RUN --mount=type=cache,target=/root/.cache/pip \
+#    pip install --upgrade pip && \
+#    pip install -r /requirements.txt --no-cache-dir   && \
+#    rm /requirements.txt
 
 
 # Copy source code into image
