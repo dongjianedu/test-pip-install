@@ -15,7 +15,7 @@ WORKDIR /
 # Update and upgrade the system packages (Worker Template)
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install --yes --no-install-recommends sudo ca-certificates  wget build-essential  bash  -y &&\
+    apt-get install --yes --no-install-recommends sudo ca-certificates  wget build-essential  bash libasound2-dev portaudio19-dev -y &&\
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
@@ -24,6 +24,7 @@ ENV CONDA_DIR /opt/conda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda
 ENV PATH=$CONDA_DIR/bin:$PATH
+COPY builder/requirements.txt /requirements.txt
 RUN echo "ls /opt/conda" && \
     ls /opt/conda && \
     echo "ls /opt/conda/bin" && \
@@ -32,7 +33,17 @@ RUN echo "ls /opt/conda" && \
     conda create -n geneface python=3.9.16 -y && \
     source activate geneface && \
     conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
-    conda install -c bottler nvidiacub -y
+    conda install -c bottler nvidiacub -y && \
+    conda install pytorch3d -c pytorch3d -y && \
+    conda install ffmpeg -y && \
+    pip install -r /requirements.txt && \
+    echo "-------------conda list----------------" && \
+    conda list && \
+    echo "-------------conda list end----------------" && \
+    rm /requirements.txt
+
+
+
 
 
 
