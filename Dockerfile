@@ -15,8 +15,8 @@ WORKDIR /
 # Update and upgrade the system packages (Worker Template)
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install --yes --no-install-recommends sudo ca-certificates git wget curl bash libgl1 libx11-6 software-properties-common  cmake -y &&\
-    wget  --quiet https://mirrors.bfsu.edu.cn/anaconda/archive/Anaconda3-2022.10-Linux-x86_64.sh --no-check-certificate && \
+    apt-get install --yes --no-install-recommends sudo ca-certificates  wget build-essential  bash  -y &&\
+    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
     chmod 777 Anaconda3-2022.10-Linux-x86_64.sh && \
     bash Anaconda3-2022.10-Linux-x86_64.sh -b -p /usr/share/anaconda3 && \
     rm Anaconda3-2022.10-Linux-x86_64.sh && \
@@ -24,21 +24,15 @@ RUN apt-get update -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* \
 
-ENV CONDA_DIR /usr/share/anaconda3
+ENV CONDA_DIR /opt/conda
+RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda
 ENV PATH=$CONDA_DIR/bin:$PATH
-RUN echo "ls /usr/share/" && \
-    ls /usr/share/ && \
-    echo "ls /usr/share/anaconda3/" && \
-    ls /usr/share/anaconda3/ && \
-    echo "ls /usr/share/anaconda3/bin/" && \
-    ls /usr/share/anaconda3/bin/ && \
-    echo "ls /usr/share/anaconda3/condabin/" && \
-    ls /usr/share/anaconda3/condabin/ && \
-    /usr/share/anaconda3/condabin/conda init bash && \
-    /usr/share/anaconda3/condabin/conda create -n geneface python=3.9.16 -y && \
-    /usr/share/anaconda3/condabin/conda activate geneface && \
-    /usr/share/anaconda3/condabin/conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
-    /usr/share/anaconda3/condabin/conda install -c bottler nvidiacub -y && \
+RUN echo "ls /opt/conda" && \
+    ls /opt/conda && \
+    echo "ls /opt/conda/bin" && \
+    ls /opt/conda/bin
+
 
 
 
