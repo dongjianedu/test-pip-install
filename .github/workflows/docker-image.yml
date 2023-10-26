@@ -21,6 +21,6 @@ jobs:
         password: ${{ secrets.CODING_PASSWORD }}
         registry: deejac-docker.pkg.coding.net
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag deejac-docker.pkg.coding.net/zhanyin-ntr/test/test-ci:v1
+      run: docker build . --file Dockerfile --tag deejac-docker.pkg.coding.net/zhanyin-ntr/test/genFace:v1
     - name: Docker image push
-      run: docker push deejac-docker.pkg.coding.net/zhanyin-ntr/test/test-ci:v1
+      run: docker push deejac-docker.pkg.coding.net/zhanyin-ntr/test/genFace:v1

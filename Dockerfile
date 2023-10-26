@@ -1,5 +1,5 @@
 # Use specific version of nvidia cuda image
-FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu20.04
+FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu20.04
 
 # Remove any third-party apt sources to avoid issues with expiring keys.
 RUN rm -f /etc/apt/sources.list.d/*.list
@@ -15,7 +15,7 @@ WORKDIR /
 # Update and upgrade the system packages (Worker Template)
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install --yes --no-install-recommends sudo ca-certificates  wget build-essential  bash libasound2-dev portaudio19-dev -y &&\
+    apt-get install --yes --no-install-recommends sudo ca-certificates git wget build-essential  bash libasound2-dev portaudio19-dev -y &&\
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
@@ -32,17 +32,39 @@ RUN echo "ls /opt/conda" && \
     conda init bash && \
     conda create -n geneface python=3.9.16 -y && \
     source activate geneface && \
+    #conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=12.2 -c pytorch  && \
+    conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia && \
     conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
     conda install -c bottler nvidiacub -y && \
     conda install pytorch3d -c pytorch3d -y && \
     conda install ffmpeg -y && \
     pip install -r /requirements.txt && \
+    rm /requirements.txt
+
+RUN git clone https://github.com/yerfor/GeneFace.git && \
+    cd GeneFace && \
+    bash docs/prepare_env/install_ext.sh && \
     echo "-------------conda list----------------" && \
     conda list && \
     echo "-------------conda list end----------------" && \
-    rm /requirements.txt
 
 
+# Fetch the model
+COPY builder/fetch_models.py /fetch_models.py
+RUN python /fetch_models.py && \
+    rm /fetch_models.py
+
+RUN mv /01_MorphableModel.mat /GeneFace/deep_3drecon/BFM/01_MorphableModel.mat && \
+    mv /BFM_model_front.mat /GeneFace/deep_3drecon/BFM/BFM_model_front.mat && \
+    mv /Exp_Pca.bin /GeneFace/deep_3drecon/BFM/Exp_Pca.bin && \
+    mv /epoch_20.pth /GeneFace/deep_3drecon/deep_3drecon/checkpoints/facerecon/epoch_20.pth
+
+RUN cd /GeneFace/data_util/face_tracking && \
+    source activate geneface && \
+    python convert_BFM.py && \
+    echo "-------------convert_BFM.py begin----------------" && \
+    ls /GeneFace/data_util/face_tracking/3DMM/3DMM_info.npy \
+    echo "-------------convert_BFM.py end----------------"
 
 
 
