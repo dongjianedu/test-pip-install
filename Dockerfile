@@ -43,10 +43,14 @@ RUN echo "ls /opt/conda" && \
 
 RUN git clone https://github.com/yerfor/GeneFace.git && \
     cd /GeneFace && \
-    bash docs/prepare_env/install_ext.sh && \
-    echo "-------------conda list----------------" && \
+    source activate geneface && \
+    echo "-------------conda list begin 1----------------" && \
     conda list && \
-    echo "-------------conda list end----------------"
+    echo "-------------conda list end 1----------------"
+    bash docs/prepare_env/install_ext.sh && \
+    echo "-------------conda list begin 2----------------" && \
+    conda list && \
+    echo "-------------conda list end 2----------------"
 
 
 # Fetch the model
