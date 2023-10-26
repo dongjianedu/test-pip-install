@@ -32,7 +32,7 @@ RUN echo "ls /opt/conda" && \
     conda init bash && \
     conda create -n geneface python=3.9.16 -y && \
     source activate geneface && \
-    conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch && \
+    conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=11.3 -c pytorch -y && \
     #conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia && \
     conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
     conda install -c bottler nvidiacub -y && \
