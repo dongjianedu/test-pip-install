@@ -1,5 +1,5 @@
 # Use specific version of nvidia cuda image
-FROM nvidia/cuda:12.2.2-cudnn8-devel-ubuntu20.04
+FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu18.04
 
 # Remove any third-party apt sources to avoid issues with expiring keys.
 RUN rm -f /etc/apt/sources.list.d/*.list
@@ -32,8 +32,8 @@ RUN echo "ls /opt/conda" && \
     conda init bash && \
     conda create -n geneface python=3.9.16 -y && \
     source activate geneface && \
-    #conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=12.2 -c pytorch  && \
-    conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia && \
+    conda install pytorch==1.11.0 torchvision==0.12.0 torchaudio==0.11.0 cudatoolkit=12.2 -c pytorch  && \
+    #conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia && \
     conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath && \
     conda install -c bottler nvidiacub -y && \
     conda install pytorch3d -c pytorch3d -y && \
@@ -42,11 +42,11 @@ RUN echo "ls /opt/conda" && \
     rm /requirements.txt
 
 RUN git clone https://github.com/yerfor/GeneFace.git && \
-    cd GeneFace && \
+    cd /GeneFace && \
     bash docs/prepare_env/install_ext.sh && \
     echo "-------------conda list----------------" && \
     conda list && \
-    echo "-------------conda list end----------------" && \
+    echo "-------------conda list end----------------"
 
 
 # Fetch the model
@@ -63,7 +63,7 @@ RUN cd /GeneFace/data_util/face_tracking && \
     source activate geneface && \
     python convert_BFM.py && \
     echo "-------------convert_BFM.py begin----------------" && \
-    ls /GeneFace/data_util/face_tracking/3DMM/3DMM_info.npy \
+    ls /GeneFace/data_util/face_tracking/3DMM/3DMM_info.npy && \
     echo "-------------convert_BFM.py end----------------"
 
 
