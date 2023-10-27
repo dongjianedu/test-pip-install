@@ -20,6 +20,15 @@ RUN apt-get update -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
+RUN git clone https://github.com/yerfor/GeneFace.git && \
+    cd /GeneFace && \
+    mkdir -p ./deep_3drecon/checkpoints/facerecon/ && \
+    cd / && \
+    wget https://github.com/yerfor/GeneFace/releases/download/v1.1.0/lrs3.zip -P /checkpoints && \
+    wget https://github.com/yerfor/GeneFace/releases/download/v1.1.0/May.zip -P /checkpoints  && \
+    unzip /checkpoints/lrs3.zip -d /checkpoints && rm /checkpoints/lrs3.zip && \
+    unzip /checkpoints/May.zip -d /checkpoints && rm /checkpoints/May.zip
+
 ENV CONDA_DIR /opt/conda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
     /bin/bash ~/miniconda.sh -b -p /opt/conda
@@ -41,9 +50,8 @@ RUN echo "ls /opt/conda" && \
     pip install -r /requirements.txt && \
     rm /requirements.txt
 
-RUN git clone https://github.com/yerfor/GeneFace.git && \
-    cd /GeneFace && \
-    source activate geneface && \
+
+RUN source activate geneface && \
     echo "-------------conda list begin 1----------------" && \
     conda list && \
     echo "-------------conda list end 1----------------"
@@ -62,6 +70,7 @@ RUN source activate geneface && \
 RUN mv /01_MorphableModel.mat /GeneFace/deep_3drecon/BFM/01_MorphableModel.mat && \
     mv /BFM_model_front.mat /GeneFace/deep_3drecon/BFM/BFM_model_front.mat && \
     mv /Exp_Pca.bin /GeneFace/deep_3drecon/BFM/Exp_Pca.bin && \
+
     mv /epoch_20.pth /GeneFace/deep_3drecon/checkpoints/facerecon/epoch_20.pth
 
 RUN cd /GeneFace/data_util/face_tracking && \
