@@ -15,7 +15,7 @@ WORKDIR /
 # Update and upgrade the system packages (Worker Template)
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install --yes --no-install-recommends sudo ca-certificates git wget build-essential  bash libasound2-dev portaudio19-dev -y &&\
+    apt-get install --yes --no-install-recommends sudo ca-certificates git wget c++ gcc g++ build-essential  bash libasound2-dev portaudio19-dev -y &&\
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
@@ -47,15 +47,16 @@ RUN git clone https://github.com/yerfor/GeneFace.git && \
     echo "-------------conda list begin 1----------------" && \
     conda list && \
     echo "-------------conda list end 1----------------" && \
-    bash docs/prepare_env/install_ext.sh && \
-    echo "-------------conda list begin 2----------------" && \
-    conda list && \
-    echo "-------------conda list end 2----------------"
+    #bash docs/prepare_env/install_ext.sh && \
+    #echo "-------------conda list begin 2----------------" && \
+    #conda list && \
+    #echo "-------------conda list end 2----------------"
 
 
 # Fetch the model
 COPY builder/fetch_models.py /fetch_models.py
-RUN python /fetch_models.py && \
+RUN source activate geneface && \
+    python /fetch_models.py && \
     rm /fetch_models.py
 
 RUN mv /01_MorphableModel.mat /GeneFace/deep_3drecon/BFM/01_MorphableModel.mat && \
