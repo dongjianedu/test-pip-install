@@ -15,7 +15,7 @@ WORKDIR /
 # Update and upgrade the system packages (Worker Template)
 RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt-get install --yes --no-install-recommends sudo ca-certificates git wget c++ gcc g++ build-essential  bash libasound2-dev portaudio19-dev -y &&\
+    apt-get install --yes --no-install-recommends sudo ca-certificates git wget  build-essential  bash libasound2-dev portaudio19-dev -y &&\
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
