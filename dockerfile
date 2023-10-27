@@ -3,14 +3,36 @@ FROM $BASE_IMAGE
 
 ENV TORCH_CUDA_ARCH_LIST="8.0 8.6+PTX"
 
+
+
+
 COPY . .
 
 RUN echo "GO BRRR!" \
     && conda install -y -c fvcore -c iopath -c conda-forge fvcore iopath \
     && pip install "git+https://github.com/facebookresearch/pytorch3d.git" \
     && apt-get update \
-    && apt-get install -y libasound2-dev portaudio19-dev \
+    && apt-get install -y libasound2-dev portaudio19-dev wget git zip \
     && pip install -r requirements.txt \
     && pip install tensorflow==2.12.0 "opencv-python-headless<4.3" protobuf==3.20.3 \
     && conda install -y ffmpeg \
     && bash install_ext.sh
+
+RUN git clone https://github.com/yerfor/GeneFace.git && \
+    cd /GeneFace && \
+    mkdir -p ./deep_3drecon/checkpoints/facerecon/ && \
+    cd / && \
+    wget https://github.com/yerfor/GeneFace/releases/download/v1.1.0/lrs3.zip -P /checkpoints && \
+    wget https://github.com/yerfor/GeneFace/releases/download/v1.1.0/May.zip -P /checkpoints  && \
+    unzip /checkpoints/lrs3.zip -d /checkpoints && rm /checkpoints/lrs3.zip && \
+    unzip /checkpoints/May.zip -d /checkpoints && rm /checkpoints/May.zip
+
+
+COPY builder/fetch_models.py /fetch_models.py
+RUN python /fetch_models.py && \
+    rm /fetch_models.py && \
+    mv /01_MorphableModel.mat /GeneFace/deep_3drecon/BFM/01_MorphableModel.mat && \
+    mv /BFM_model_front.mat /GeneFace/deep_3drecon/BFM/BFM_model_front.mat && \
+    mv /Exp_Pca.bin /GeneFace/deep_3drecon/BFM/Exp_Pca.bin && \
+    mv /epoch_20.pth /GeneFace/deep_3drecon/checkpoints/facerecon/epoch_20.pth
+

@@ -14,13 +14,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag deejac-docker.pkg.coding.net/zhanyin-ntr/test/gen-face:v2
     - name: Docker login
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.CODING_USERNAME }}
         password: ${{ secrets.CODING_PASSWORD }}
         registry: deejac-docker.pkg.coding.net
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag deejac-docker.pkg.coding.net/zhanyin-ntr/test/gen-face:v1
     - name: Docker image push
-      run: docker push deejac-docker.pkg.coding.net/zhanyin-ntr/test/gen-face:v1
+      run: docker push deejac-docker.pkg.coding.net/zhanyin-ntr/test/gen-face:v2
+    - name: Docker login
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      run: docker tag deejac-docker.pkg.coding.net/zhanyin-ntr/test/gen-face:v2 ${{ secrets.DOCKERHUB_USERNAME }}/gen-face:v2
+    - name: Docker image push
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/gen-face:v2
+
