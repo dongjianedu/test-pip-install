@@ -62,7 +62,7 @@ RUN source activate geneface && \
 RUN mv /01_MorphableModel.mat /GeneFace/deep_3drecon/BFM/01_MorphableModel.mat && \
     mv /BFM_model_front.mat /GeneFace/deep_3drecon/BFM/BFM_model_front.mat && \
     mv /Exp_Pca.bin /GeneFace/deep_3drecon/BFM/Exp_Pca.bin && \
-    mv /epoch_20.pth /GeneFace/deep_3drecon/deep_3drecon/checkpoints/facerecon/epoch_20.pth
+    mv /epoch_20.pth /GeneFace/deep_3drecon/checkpoints/facerecon/epoch_20.pth
 
 RUN cd /GeneFace/data_util/face_tracking && \
     source activate geneface && \
