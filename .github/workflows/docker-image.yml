@@ -29,6 +29,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
+    - name: Docker image tag
       run: docker tag deejac-docker.pkg.coding.net/zhanyin-ntr/test/gen-face:v2 ${{ secrets.DOCKERHUB_USERNAME }}/gen-face:v2
     - name: Docker image push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/gen-face:v2
