@@ -46,7 +46,7 @@ RUN git clone https://github.com/yerfor/GeneFace.git && \
     source activate geneface && \
     echo "-------------conda list begin 1----------------" && \
     conda list && \
-    echo "-------------conda list end 1----------------" && \
+    echo "-------------conda list end 1----------------"
     #bash docs/prepare_env/install_ext.sh && \
     #echo "-------------conda list begin 2----------------" && \
     #conda list && \
