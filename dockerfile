@@ -3,9 +3,11 @@ FROM $BASE_IMAGE
 
 ENV TORCH_CUDA_ARCH_LIST="8.0 8.6+PTX"
 
+RUN DEBIAN_FRONTEND=noninteractive apt install -y tzdata
+
 RUN echo "GO BRRR!" \
     && apt-get update \
-    && apt-get install -y tzdata wget git zip ffmpeg \
+    && apt-get install -y  wget git zip ffmpeg \
     && git clone https://github.com/vinthony/video-retalking.git \
     && cd video-retalking \
     && pip install -r requirements.txt \
