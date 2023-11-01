@@ -3,7 +3,7 @@ FROM $BASE_IMAGE
 
 ENV TORCH_CUDA_ARCH_LIST="8.0 8.6+PTX"
 
-RUN DEBIAN_FRONTEND=noninteractive apt install -y tzdata
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN echo "GO BRRR!" \
     && apt-get update \
