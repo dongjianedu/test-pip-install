@@ -15,8 +15,7 @@ RUN echo "GO BRRR!" \
     && pip install  opencv-python==4.5.1.48 \
     && git clone https://github.com/facebookresearch/detectron2.git
 COPY builder/download_model.py /download_model.py
-RUN cd / && \
-    python /download_model.py && \
+RUN python /download_model.py && \
     rm /download_model.py
 
 
