@@ -6,6 +6,7 @@ ENV TORCH_CUDA_ARCH_LIST="8.0 8.6+PTX"
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN echo "GO BRRR!" \
+    && sudo df -h \
     && apt-get update \
     && apt-get install -y  wget git  ffmpeg
 
