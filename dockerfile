@@ -11,6 +11,8 @@ RUN echo "GO BRRR!" \
     && git clone https://github.com/Flode-Labs/vid2densepose.git \
     && cd vid2densepose \
     && pip install -r requirements.txt \
-    && git clone https://github.com/facebookresearch/detectron2.git
+    && pip install  opencv-python==4.5.1.48 \
+    && git clone https://github.com/facebookresearch/detectron2.git \
+    && python main.py
 
 
