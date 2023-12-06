@@ -12,7 +12,9 @@ RUN echo "GO BRRR!" \
     && cd vid2densepose \
     && pip install -r requirements.txt \
     && pip install  opencv-python==4.5.1.48 \
-    && git clone https://github.com/facebookresearch/detectron2.git \
-    && wget https://dl.fbaipublicfiles.com/densepose/densepose_rcnn_R_50_FPN_s1x/165712039/model_final_162be9.pkl -O .torch/iopath_cache/densepose/densepose_rcnn_R_50_FPN_s1x/165712039/model_final_162be9.pkl
+    && git clone https://github.com/facebookresearch/detectron2.git
+COPY builder/download_model.py /download_model.py
+RUN python /download_model.py && \
+    rm /download_model.py
 
 
