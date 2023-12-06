@@ -10,6 +10,7 @@ RUN echo "GO BRRR!" \
     && apt-get install -y  wget git zip ffmpeg \
     && git clone https://github.com/Flode-Labs/vid2densepose.git \
     && cd vid2densepose \
+    && ls -la \
     && pip install -r requirements.txt \
     && pip install  opencv-python==4.5.1.48 \
     && git clone https://github.com/facebookresearch/detectron2.git
