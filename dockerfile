@@ -12,7 +12,13 @@ ENV SHELL=/bin/bash
 # Set working directory
 WORKDIR /
 # Update and upgrade the system packages (Worker Template)
-RUN df -h
+RUN df -h && \
+    apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install --yes --no-install-recommends sudo ca-certificates git wget  build-essential  bash  ffmpeg -y &&\
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV CONDA_DIR /opt/conda
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh && \
