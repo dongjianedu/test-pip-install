@@ -33,7 +33,7 @@ RUN echo "ls /opt/conda" && \
     git clone https://github.com/magic-research/magic-animate.git && \
     cd magic-animate && \
     conda env create -f environment.yaml && \
-    conda activate manimate && \
+    source activate manimate && \
     conda list && \
     df -h
 
