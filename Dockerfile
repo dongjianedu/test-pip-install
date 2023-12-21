@@ -28,7 +28,39 @@ RUN apk add --no-cache wget && \
 # ---------------------------------------------------------------------------- #
 #                        Stage 3: Build the final image                        #
 # ---------------------------------------------------------------------------- #
-FROM python:3.10.9-slim as build_final_image
+#FROM python:3.10.9-slim as build_final_image
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
+
+# Remove any third-party apt sources to avoid issues with expiring keys.
+RUN rm -f /etc/apt/sources.list.d/*.list
+
+# Set shell and noninteractive environment variables
+SHELL ["/bin/bash", "-c"]
+ENV DEBIAN_FRONTEND=noninteractive
+ENV SHELL=/bin/bash
+
+WORKDIR /
+
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install --yes --no-install-recommends sudo ca-certificates git wget curl bash libgl1 libx11-6 software-properties-common ffmpeg build-essential libssl-dev libasound2  cmake -y &&\
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+
+RUN add-apt-repository ppa:deadsnakes/ppa -y && \
+    apt-get install python3.10-dev python3.10-venv python3-pip -y --no-install-recommends  && \
+    ln -s /usr/bin/python3.10 /usr/bin/python && \
+    rm /usr/bin/python3 && \
+    ln -s /usr/bin/python3.10 /usr/bin/python3 && \
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+    python get-pip.py && \
+    rm get-pip.py
 
 ARG SHA=5ef669de080814067961f28357256e8fe27544f4
 
@@ -45,7 +77,7 @@ RUN export TORCH_COMMAND='pip install --pre torch torchvision torchaudio --extra
 
 RUN apt-get update && \
     apt install -y \
-    fonts-dejavu-core rsync git jq moreutils aria2 wget libgoogle-perftools-dev procps libgl1 libglib2.0-0 && \
+    fonts-dejavu-core rsync  jq moreutils aria2  libgoogle-perftools-dev procps  libglib2.0-0 && \
     apt-get autoremove -y && rm -rf /var/lib/apt/lists/* && apt-get clean -y
 
 RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
