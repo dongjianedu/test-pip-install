@@ -21,7 +21,7 @@ RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f1
     . /clone.sh generative-models https://github.com/Stability-AI/generative-models 45c443b316737a4ab6e40413d7794a7f5657c19f
 
 RUN apk add --no-cache wget && \
-    wget  -O /model.safetensors "https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/2253457/classicV2ByStable.JaA9.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22classicBYSTABLEYOGI_v20.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20231221/us-east-1/s3/aws4_request&X-Amz-Date=20231221T123949Z&X-Amz-SignedHeaders=host&X-Amz-Signature=361ff23852b31b41b27efa10e8637ceb4ee7e95f2c06cbb1e34f0cea56bbacad"
+    wget  -O /model.safetensors "https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/2253457/classicV2ByStable.JaA9.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22classicBYSTABLEYOGI_v20.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20231224/us-east-1/s3/aws4_request&X-Amz-Date=20231224T135055Z&X-Amz-SignedHeaders=host&X-Amz-Signature=8126c0eba98588754ed32400a048df635d3ba97fe6ce606b85fb8d83d9987e5f"
 
 
 
