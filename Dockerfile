@@ -104,6 +104,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --upgrade pip && \
     pip install --upgrade -r /requirements.txt --no-cache-dir && \
     rm /requirements.txt && \
+    cd / && \
     python /fetch_models.py && \
     mkdir ${ROOT}/models/ControlNet && \
     mv /majicmixRealistic_v7.safetensors ${ROOT}/models/Stable-diffusion && \
