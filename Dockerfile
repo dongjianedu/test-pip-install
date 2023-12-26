@@ -20,8 +20,8 @@ RUN . /clone.sh BLIP https://github.com/salesforce/BLIP.git 48211a1594f1321b00f1
     . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interrogator 2486589f24165c8e3b303f84e9dbbea318df83e8 && \
     . /clone.sh generative-models https://github.com/Stability-AI/generative-models 45c443b316737a4ab6e40413d7794a7f5657c19f
 
-RUN apk add --no-cache wget && \
-    wget  -O /model.safetensors "https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/2253457/classicV2ByStable.JaA9.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22classicBYSTABLEYOGI_v20.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20231225/us-east-1/s3/aws4_request&X-Amz-Date=20231225T040453Z&X-Amz-SignedHeaders=host&X-Amz-Signature=58a649383098736e288cb9c81973262de13f4570c6734613223ef0308e6e1157"
+#RUN apk add --no-cache wget && \
+#    wget  -O /model.safetensors "https://civitai-delivery-worker-prod.5ac0637cfd0766c97916cefa3764fbdf.r2.cloudflarestorage.com/model/2253457/classicV2ByStable.JaA9.safetensors?X-Amz-Expires=86400&response-content-disposition=attachment%3B%20filename%3D%22classicBYSTABLEYOGI_v20.safetensors%22&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=e01358d793ad6966166af8b3064953ad/20231225/us-east-1/s3/aws4_request&X-Amz-Date=20231225T040453Z&X-Amz-SignedHeaders=host&X-Amz-Signature=58a649383098736e288cb9c81973262de13f4570c6734613223ef0308e6e1157"
 
 
 
@@ -86,26 +86,36 @@ RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip 
 RUN --mount=type=cache,target=/root/.cache/pip \
     git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
     cd stable-diffusion-webui && \
-    git reset --hard ${SHA}
+    git reset --hard ${SHA} && \
+    cd ${ROOT}/extensions && \
+    git clone https://github.com/Mikubill/sd-webui-controlnet.git
 #&& \ pip install -r requirements_versions.txt
 
 COPY --from=download /repositories/ ${ROOT}/repositories/
-COPY --from=download /model.safetensors /model.safetensors
+#COPY --from=download /model.safetensors /model.safetensors
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
 # Install Python dependencies (Worker Template)
 COPY builder/requirements.txt /requirements.txt
+COPY builder/fetch_sd_models.py /fetch_models.py
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --upgrade pip && \
     pip install --upgrade -r /requirements.txt --no-cache-dir && \
-    rm /requirements.txt
+    rm /requirements.txt && \
+    python /fetch_models.py && \
+    mkdir ${ROOT}/models/ControlNet && \
+    mv /majicmixRealistic_v7.safetensors ${ROOT}/models/Stable-diffusion && \
+    mv /control_v11f1p_sd15_depth.pth ${ROOT}/models/ControlNet && \
+    mv /control_v11p_sd15_openpose.pth ${ROOT}/models/ControlNet
+
+
 
 ADD src .
 
-COPY builder/cache.py /stable-diffusion-webui/cache.py
-RUN cd /stable-diffusion-webui && python cache.py --use-cpu=all --ckpt /model.safetensors
+COPY builder/cache.py ${ROOT}/cache.py
+RUN cd ${ROOT} && python cache.py --use-cpu=all --ckpt ${ROOT}/models/Stable-diffusion/majicmixRealistic_v7.safetensors
 
 # Cleanup section (Worker Template)
 RUN apt-get autoremove -y && \
@@ -113,5 +123,5 @@ RUN apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Set permissions and specify the command to run
-RUN chmod +x /start.sh
-CMD /start.sh
+#RUN chmod +x /start.sh
+#CMD /start.sh
