@@ -109,16 +109,21 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     mkdir ${ROOT}/models/ControlNet && \
     pwd && \
     ls -la && \
-    mv /models/majicmixRealistic_v7.safetensors ${ROOT}/models/Stable-diffusion && \
-    mv /models/control_v11f1p_sd15_depth.pth ${ROOT}/models/ControlNet && \
-    mv /models/control_v11p_sd15_openpose.pth ${ROOT}/models/ControlNet
+    ln -s /models/majicmixRealistic_v7.safetensors ${ROOT}/models/Stable-diffusion/majicmixRealistic_v7.safetensors && \
+    ln -s /models/control_v11f1p_sd15_depth.pth ${ROOT}/models/ControlNet/control_v11f1p_sd15_depth.pth && \
+    ln -s /models/control_v11p_sd15_openpose.pth ${ROOT}/models/ControlNet/control_v11p_sd15_openpose.pth && \
+    ln -s /models/downloads/openpose/body_pose_model.pth ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/openpose/body_pose_model.pth && \
+    ln -s /models/downloads/openpose/facenet.pth ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/openpose/facenet.pth && \
+    ln -s /models/downloads/openpose/hand_pose_model.pth ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/openpose/hand_pose_model.pth && \
+    ln -s /models/downloads/midas/dpt_hybrid-midas-501f0c75.pt ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/midas/dpt_hybrid-midas-501f0c75.pt && \
+    ln -s /models/downloads/mlsd/mlsd_large_512_fp32.pth ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/mlsd/mlsd_large_512_fp32.pth
 
 
 
 ADD src .
 
 COPY builder/cache.py ${ROOT}/cache.py
-RUN cd ${ROOT} && python cache.py --use-cpu=all --ckpt ${ROOT}/models/Stable-diffusion/majicmixRealistic_v7.safetensors
+RUN cd ${ROOT} && python cache.py --use-cpu=all --ckpt /models/control_v11f1p_sd15_depth.pth
 
 # Cleanup section (Worker Template)
 RUN apt-get autoremove -y && \
