@@ -107,9 +107,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     cd / && \
     python /fetch_models.py && \
     mkdir ${ROOT}/models/ControlNet && \
-    mv /majicmixRealistic_v7.safetensors ${ROOT}/models/Stable-diffusion && \
-    mv /control_v11f1p_sd15_depth.pth ${ROOT}/models/ControlNet && \
-    mv /control_v11p_sd15_openpose.pth ${ROOT}/models/ControlNet
+    pwd && \
+    ls -la && \
+    mv /models/majicmixRealistic_v7.safetensors ${ROOT}/models/Stable-diffusion && \
+    mv /models/control_v11f1p_sd15_depth.pth ${ROOT}/models/ControlNet && \
+    mv /models/control_v11p_sd15_openpose.pth ${ROOT}/models/ControlNet
 
 
 
