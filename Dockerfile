@@ -126,7 +126,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 ADD src .
 
 COPY builder/cache.py ${ROOT}/cache.py
-RUN cd ${ROOT} && python cache.py --use-cpu=all --ckpt /models/majicmixRealistic_v7.safetensors
+RUN cd ${ROOT} && python cache.py  --no-half  --no-half-vae --use-cpu=all --ckpt /models/majicmixRealistic_v7.safetensors
 
 # Cleanup section (Worker Template)
 RUN apt-get autoremove -y && \
