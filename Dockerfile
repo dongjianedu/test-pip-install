@@ -101,6 +101,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY builder/requirements.txt /requirements.txt
 COPY builder/fetch_sd_models.py /fetch_models.py
 COPY builder/fetch_civita_models.py /fetch_civita_models.py
+COPY builder/fetch_seg_models.py /fetch_seg_models.py
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --upgrade pip && \
     pip install --upgrade -r /requirements.txt --no-cache-dir && \
@@ -119,7 +120,10 @@ RUN cd ${ROOT} && python cache.py  --no-half  --no-half-vae --use-cpu=all --ckpt
 RUN apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -fr /root/.cache/huggingface/hub/models--deejac--zhanyin
+    rm -fr /root/.cache/huggingface/hub/models--deejac--zhanyin && \
+    python /fetch_seg_models.py
+
+
 
 # Set permissions and specify the command to run
 #RUN chmod +x /start.sh
