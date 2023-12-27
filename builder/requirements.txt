@@ -15,7 +15,7 @@ basicsr==1.4.2
 einops==0.4.1
 gradio==3.41.2
 kornia==0.6.7
-numpy==1.23.5
+numpy==1.24.2
 omegaconf==2.2.3
 pytorch_lightning==1.9.4
 realesrgan==0.3.0
