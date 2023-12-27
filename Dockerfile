@@ -100,26 +100,13 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # Install Python dependencies (Worker Template)
 COPY builder/requirements.txt /requirements.txt
 COPY builder/fetch_sd_models.py /fetch_models.py
+COPY builder/fetch_civita_models.py /fetch_civita_models.py
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install --upgrade pip && \
     pip install --upgrade -r /requirements.txt --no-cache-dir && \
     rm /requirements.txt && \
     cd / && \
-    python /fetch_models.py && \
-    mkdir ${ROOT}/models/ControlNet && \
-    pwd && \
-    ls -la && \
-    ln -s /models/majicmixRealistic_v7.safetensors ${ROOT}/models/Stable-diffusion/majicmixRealistic_v7.safetensors && \
-    ln -s /models/control_v11f1p_sd15_depth.pth ${ROOT}/models/ControlNet/control_v11f1p_sd15_depth.pth && \
-    ln -s /models/control_v11p_sd15_openpose.pth ${ROOT}/models/ControlNet/control_v11p_sd15_openpose.pth && \
-    mkdir -p ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/openpose && \
-    ln -s /models/downloads/openpose/body_pose_model.pth ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/openpose/body_pose_model.pth && \
-    ln -s /models/downloads/openpose/facenet.pth ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/openpose/facenet.pth && \
-    ln -s /models/downloads/openpose/hand_pose_model.pth ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/openpose/hand_pose_model.pth && \
-    mkdir -p ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/midas && \
-    ln -s /models/downloads/midas/dpt_hybrid-midas-501f0c75.pt ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/midas/dpt_hybrid-midas-501f0c75.pt && \
-    mkdir -p ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/mlsd && \
-    ln -s /models/downloads/mlsd/mlsd_large_512_fp32.pth ${ROOT}/extensions/sd-webui-controlnet/annotator/downloads/mlsd/mlsd_large_512_fp32.pth
+    python /fetch_civita_models.py
 
 
 
@@ -131,7 +118,8 @@ RUN cd ${ROOT} && python cache.py  --no-half  --no-half-vae --use-cpu=all --ckpt
 # Cleanup section (Worker Template)
 RUN apt-get autoremove -y && \
     apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm -fr /root/.cache/huggingface/hub/models--deejac--zhanyin
 
 # Set permissions and specify the command to run
 #RUN chmod +x /start.sh
