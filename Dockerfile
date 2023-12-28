@@ -83,11 +83,15 @@ RUN apt-get update && \
 RUN --mount=type=cache,target=/cache --mount=type=cache,target=/root/.cache/pip \
     pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu113
 
+ENV CUDA_HOME=/usr/local/cuda-11.3
+
 RUN  --mount=type=cache,target=/root/.cache/pip \
     cd / && \
     git clone https://github.com/IDEA-Research/GroundingDINO.git && \
     cd GroundingDINO && \
-    export CUDA_HOME=/usr/local/cuda-11.3 && \
+    pip install -e . \
+    cd / && \
+    git clone https://github.com/luca-medeiros/lang-segment-anything && cd lang-segment-anything \
     pip install -e .
 
 #RUN --mount=type=cache,target=/root/.cache/pip \
