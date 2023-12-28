@@ -54,6 +54,8 @@ git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeeb
 #segmentation
 #git+https://github.com/luca-medeiros/lang-segment-anything.git
 #ply==3.11
+lightning_cloud
+deepdiff
 
 #control net dependencies
 mediapipe

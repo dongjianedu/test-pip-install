@@ -87,52 +87,52 @@ ENV CUDA_HOME=/usr/local/cuda-11.3
 
 RUN  --mount=type=cache,target=/root/.cache/pip \
     cd / && \
-    git clone https://github.com/luca-medeiros/lang-segment-anything && cd lang-segment-anything && \
+    git clone https://github.com/facebookresearch/segment-anything.git && cd segment-anything && \
     pip install -e . && \
     cd / && \
     git clone https://github.com/IDEA-Research/GroundingDINO.git && \
     cd GroundingDINO && \
     pip install -e .
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-    git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
-    cd stable-diffusion-webui && \
-    git reset --hard ${SHA} && \
-    cd ${ROOT}/extensions && \
-    git clone https://github.com/Mikubill/sd-webui-controlnet.git
-#&& \ pip install -r requirements_versions.txt
-
-COPY --from=download /repositories/ ${ROOT}/repositories/
-#COPY --from=download /model.safetensors /model.safetensors
-RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
-
-# Install Python dependencies (Worker Template)
-COPY builder/requirements.txt /requirements.txt
-COPY builder/fetch_sd_models.py /fetch_models.py
-COPY builder/fetch_civita_models.py /fetch_civita_models.py
-COPY builder/fetch_seg_models.py /fetch_seg_models.py
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install --upgrade pip && \
-    pip install --upgrade -r /requirements.txt --no-cache-dir && \
-    rm /requirements.txt && \
-    cd / && \
-    python /fetch_civita_models.py
-
-
-
-ADD src .
-
-COPY builder/cache.py ${ROOT}/cache.py
-RUN cd ${ROOT} && python cache.py  --no-half  --no-half-vae --use-cpu=all --ckpt /models/majicmixRealistic_v7.safetensors
-
-# Cleanup section (Worker Template)
-RUN apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -fr /root/.cache/huggingface/hub/models--deejac--zhanyin && \
-    python /fetch_seg_models.py
+#RUN --mount=type=cache,target=/root/.cache/pip \
+#    git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
+#    cd stable-diffusion-webui && \
+#    git reset --hard ${SHA} && \
+#    cd ${ROOT}/extensions && \
+#    git clone https://github.com/Mikubill/sd-webui-controlnet.git
+##&& \ pip install -r requirements_versions.txt
+#
+#COPY --from=download /repositories/ ${ROOT}/repositories/
+##COPY --from=download /model.safetensors /model.safetensors
+#RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/data/* ${ROOT}/interrogate
+#RUN --mount=type=cache,target=/root/.cache/pip \
+#    pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
+#
+## Install Python dependencies (Worker Template)
+#COPY builder/requirements.txt /requirements.txt
+#COPY builder/fetch_sd_models.py /fetch_models.py
+#COPY builder/fetch_civita_models.py /fetch_civita_models.py
+#COPY builder/fetch_seg_models.py /fetch_seg_models.py
+#RUN --mount=type=cache,target=/root/.cache/pip \
+#    pip install --upgrade pip && \
+#    pip install --upgrade -r /requirements.txt --no-cache-dir && \
+#    rm /requirements.txt && \
+#    cd / && \
+#    python /fetch_civita_models.py
+#
+#
+#
+#ADD src .
+#
+#COPY builder/cache.py ${ROOT}/cache.py
+#RUN cd ${ROOT} && python cache.py  --no-half  --no-half-vae --use-cpu=all --ckpt /models/majicmixRealistic_v7.safetensors
+#
+## Cleanup section (Worker Template)
+#RUN apt-get autoremove -y && \
+#    apt-get clean -y && \
+#    rm -rf /var/lib/apt/lists/* && \
+#    rm -fr /root/.cache/huggingface/hub/models--deejac--zhanyin && \
+#    python /fetch_seg_models.py
 
 
 
