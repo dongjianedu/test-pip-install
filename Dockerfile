@@ -109,15 +109,15 @@ RUN  --mount=type=cache,target=/root/.cache/pip \
 #    pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
 #
 ## Install Python dependencies (Worker Template)
-#COPY builder/requirements.txt /requirements.txt
+COPY builder/requirements.txt /requirements.txt
 #COPY builder/fetch_sd_models.py /fetch_models.py
 #COPY builder/fetch_civita_models.py /fetch_civita_models.py
 #COPY builder/fetch_seg_models.py /fetch_seg_models.py
-#RUN --mount=type=cache,target=/root/.cache/pip \
-#    pip install --upgrade pip && \
-#    pip install --upgrade -r /requirements.txt --no-cache-dir && \
-#    rm /requirements.txt && \
-#    cd / && \
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install --upgrade pip && \
+    pip install --upgrade -r /requirements.txt --no-cache-dir && \
+    rm /requirements.txt
+    #cd / && \
 #    python /fetch_civita_models.py
 #
 #

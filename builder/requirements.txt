@@ -56,6 +56,11 @@ git+https://github.com/mlfoundations/open_clip.git@bb6e834e9c70d9c27d0dc3ecedeeb
 #ply==3.11
 lightning_cloud
 deepdiff
+gradio
+lightning
+backoff
+bs4
+croniter
 
 #control net dependencies
 mediapipe
