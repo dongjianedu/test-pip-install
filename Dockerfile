@@ -89,7 +89,7 @@ RUN  --mount=type=cache,target=/root/.cache/pip \
     cd / && \
     git clone https://github.com/IDEA-Research/GroundingDINO.git && \
     cd GroundingDINO && \
-    pip install -e . \
+    pip install -e . && \
     cd / && \
     git clone https://github.com/luca-medeiros/lang-segment-anything && cd lang-segment-anything && \
     pip install -e .
