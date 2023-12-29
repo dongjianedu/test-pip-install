@@ -90,6 +90,7 @@ RUN  --mount=type=cache,target=/root/.cache/pip \
     git clone https://github.com/facebookresearch/segment-anything.git && cd segment-anything && \
     pip install -e . && \
     cd / && \
+    export CUDA_HOME=/usr/local/cuda-11.3 && \
     git clone https://github.com/IDEA-Research/GroundingDINO.git && \
     cd GroundingDINO && \
     pip install -e .
