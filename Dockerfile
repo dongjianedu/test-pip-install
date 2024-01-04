@@ -93,7 +93,12 @@ RUN  --mount=type=cache,target=/root/.cache/pip \
     export CUDA_HOME=/usr/local/cuda-11.3 && \
     git clone https://github.com/IDEA-Research/GroundingDINO.git && \
     cd GroundingDINO && \
+    pip install -e . \
+    cd / && \
+    git clone https://github.com/luca-medeiros/lang-segment-anything &&  \
+    cd lang-segment-anything && \
     pip install -e .
+
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
