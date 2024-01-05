@@ -33,7 +33,7 @@ if [ -d "$DIRECTORY" ]; then
 else
     # 如果目录不存在，执行b
     echo "Directory not  exists. download models"
-    python python /fetch_models.py
+    python  /fetch_models.py
     mkdir /stable-diffusion-webui/models/ControlNet
     ln -s /models/majicmixRealistic_v7.safetensors /stable-diffusion-webui/models/Stable-diffusion/majicmixRealistic_v7.safetensors
     ln -s /models/control_v11f1p_sd15_depth.pth /stable-diffusion-webui/models/ControlNet/control_v11f1p_sd15_depth.pth
