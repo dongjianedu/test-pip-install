@@ -138,7 +138,8 @@ RUN apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* && \
     rm -fr /root/.cache/huggingface/hub/models--deejac--zhanyin && \
-    python /fetch_seg_models.py
+    python /fetch_seg_models.py && \
+    df -h
 
 
 
