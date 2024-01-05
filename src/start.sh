@@ -26,6 +26,10 @@ if [ -d "$DIRECTORY" ]; then
     mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/mlsd
     cd /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/mlsd
     ln -s /root/.cache/huggingface/hub/models--deejac--zhanyin/blobs/5696f168eb2c30d4374bbfd45436f7415bb4d88da29bea97eea0101520fba082 ./mlsd_large_512_fp32.pth
+    cp  /workspace/detection_Resnet50_Final.pth  /stable-diffusion-webui/repositories/CodeFormer/facelib/detection_Resnet50_Final.pth
+	  cp  /workspace/codeformer-v0.1.0.pth  /stable-diffusion-webui/models/Codeformer/codeformer-v0.1.0.pth
+	  cp  /workspace/parsing_parsenet.pth   /stable-diffusion-webui/repositories/CodeFormer/weights/facelib/parsing_parsenet.pth
+	  cp  /workspace/detection_Resnet50_Final.pth    /stable-diffusion-webui/repositories/CodeFormer/weights/facelib/detection_Resnet50_Final.pth
 else
     # 如果目录不存在，执行b
     echo "Directory not  exists. download models"
@@ -50,9 +54,11 @@ echo "Worker Initiated"
 
 echo "Starting WebUI API"
 cd /stable-diffusion-webui
-python webui.py --port 3000 --api  --listen  --no-download-sd-model
+python webui.py --port 3000 --api  --listen  --no-download-sd-model &
+sleep 100
 cd /
-python sam-server.py
+python sam-server.py &
+sleep 200
 #python /stable-diffusion-webui/webui.py --skip-python-version-check --skip-torch-cuda-test --skip-install --ckpt /model.safetensors --lowram --opt-sdp-attention --disable-safe-unpickle --port 3000 --api --nowebui --skip-version-check  --no-hashing --no-download-sd-model &
 
 #echo "Starting RunPod Handler"

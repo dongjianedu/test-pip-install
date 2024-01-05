@@ -61,6 +61,7 @@ lightning
 backoff
 bs4
 croniter
+flask
 
 #control net dependencies
 mediapipe
