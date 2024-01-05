@@ -34,17 +34,17 @@ else
     # 如果目录不存在，执行b
     echo "Directory not  exists. download models"
     python python /fetch_models.py
-    mkdir /stable-diffusion-webui/models/ControlNet && \
-    ln -s /models/majicmixRealistic_v7.safetensors /stable-diffusion-webui/models/Stable-diffusion/majicmixRealistic_v7.safetensors && \
-    ln -s /models/control_v11f1p_sd15_depth.pth /stable-diffusion-webui/models/ControlNet/control_v11f1p_sd15_depth.pth && \
-    ln -s /models/control_v11p_sd15_openpose.pth /stable-diffusion-webui/models/ControlNet/control_v11p_sd15_openpose.pth && \
-    mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose && \
-    ln -s /models/downloads/openpose/body_pose_model.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose/body_pose_model.pth && \
-    ln -s /models/downloads/openpose/facenet.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose/facenet.pth && \
-    ln -s /models/downloads/openpose/hand_pose_model.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose/hand_pose_model.pth && \
-    mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/midas && \
-    ln -s /models/downloads/midas/dpt_hybrid-midas-501f0c75.pt /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/midas/dpt_hybrid-midas-501f0c75.pt && \
-    mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/mlsd && \
+    mkdir /stable-diffusion-webui/models/ControlNet
+    ln -s /models/majicmixRealistic_v7.safetensors /stable-diffusion-webui/models/Stable-diffusion/majicmixRealistic_v7.safetensors
+    ln -s /models/control_v11f1p_sd15_depth.pth /stable-diffusion-webui/models/ControlNet/control_v11f1p_sd15_depth.pth
+    ln -s /models/control_v11p_sd15_openpose.pth /stable-diffusion-webui/models/ControlNet/control_v11p_sd15_openpose.pth
+    mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose
+    ln -s /models/downloads/openpose/body_pose_model.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose/body_pose_model.pth
+    ln -s /models/downloads/openpose/facenet.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose/facenet.pth
+    ln -s /models/downloads/openpose/hand_pose_model.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose/hand_pose_model.pth
+    mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/midas
+    ln -s /models/downloads/midas/dpt_hybrid-midas-501f0c75.pt /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/midas/dpt_hybrid-midas-501f0c75.pt
+    mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/mlsd
     ln -s /models/downloads/mlsd/mlsd_large_512_fp32.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/mlsd/mlsd_large_512_fp32.pth
 fi
 
