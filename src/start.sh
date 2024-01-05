@@ -1,8 +1,6 @@
 #!/bin/bash
 
-cd /GroundingDINO
-echo "reinstall GroundingDINO"
-pip install -e .
+
 
 # cache hug model
 DIRECTORY=/root/.cache/huggingface/hub/models--deejac--zhanyin
@@ -42,7 +40,7 @@ else
     ln -s /models/majicmixRealistic_v7.safetensors /stable-diffusion-webui/models/Stable-diffusion/majicmixRealistic_v7.safetensors
     echo "link control_v11p_sd15_openpose.pth"
     ln -s /models/control_v11f1p_sd15_depth.pth /stable-diffusion-webui/models/ControlNet/control_v11f1p_sd15_depth.pth
-    ll /stable-diffusion-webui/models/ControlNet/
+    ls -l /stable-diffusion-webui/models/ControlNet/
     ln -s /models/control_v11p_sd15_openpose.pth /stable-diffusion-webui/models/ControlNet/control_v11p_sd15_openpose.pth
     mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose
     ln -s /models/downloads/openpose/body_pose_model.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose/body_pose_model.pth
@@ -53,8 +51,12 @@ else
     mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/mlsd
     ln -s /models/downloads/mlsd/mlsd_large_512_fp32.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/mlsd/mlsd_large_512_fp32.pth
 fi
+echo "check control_v11p_sd15_openpose.pth------------------------------------"
+ls -l /stable-diffusion-webui/models/ControlNet/
 
-
+cd /GroundingDINO
+echo "reinstall GroundingDINO"
+pip install -e .
 
 echo "Worker Initiated"
 
