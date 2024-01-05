@@ -8,7 +8,7 @@ import uuid
 app = Flask(__name__)
 model = LangSAM()
 
-@app.route('/process', methods=['POST'])
+@app.route('/process', methods=['POST', 'GET'])
 def process_image():
     image_path = request.json['image_path']
     image_pil = Image.open(image_path).convert("RGB")
