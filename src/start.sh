@@ -34,9 +34,15 @@ else
     # 如果目录不存在，执行b
     echo "Directory not  exists. download models"
     python  /fetch_models.py
-    mkdir /stable-diffusion-webui/models/ControlNet
+    mkdir -p /stable-diffusion-webui/models/ControlNet
+    cd /models
+    ls -l
+    cd /models/downloads/
+    ls -l
     ln -s /models/majicmixRealistic_v7.safetensors /stable-diffusion-webui/models/Stable-diffusion/majicmixRealistic_v7.safetensors
+    echo "link control_v11p_sd15_openpose.pth"
     ln -s /models/control_v11f1p_sd15_depth.pth /stable-diffusion-webui/models/ControlNet/control_v11f1p_sd15_depth.pth
+    ll /stable-diffusion-webui/models/ControlNet/
     ln -s /models/control_v11p_sd15_openpose.pth /stable-diffusion-webui/models/ControlNet/control_v11p_sd15_openpose.pth
     mkdir -p /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose
     ln -s /models/downloads/openpose/body_pose_model.pth /stable-diffusion-webui/extensions/sd-webui-controlnet/annotator/downloads/openpose/body_pose_model.pth
