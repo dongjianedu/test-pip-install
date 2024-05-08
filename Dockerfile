@@ -46,8 +46,8 @@ RUN pip3 install runpod requests
 WORKDIR /
 
 # Add the start and the handler
-#ADD src/start.sh src/rp_handler.py test_input.json ./
-#RUN chmod +x /start.sh
+ADD src/comfy/start.sh src/comfy/rp_handler.py src/comfy/test_input.json ./
+RUN chmod +x /start.sh
 
 # Start the container
-#CMD /start.sh
+CMD /start.sh
