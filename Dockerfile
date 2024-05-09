@@ -49,5 +49,6 @@ WORKDIR /
 ADD src/comfy/start.sh src/comfy/rp_handler.py src/comfy/test_input.json ./
 RUN chmod +x /start.sh
 
+
 # Start the container
 CMD /start.sh
