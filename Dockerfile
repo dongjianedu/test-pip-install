@@ -40,9 +40,9 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
     && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-Gemini.git \
     && cd /comfyui/custom_nodes/ComfyUI-Gemini \
     && pip3 install -r requirements.txt \
-    && git clone https://github.com/shadowcz007/comfyui-mixlab-nodes.git \
-    && cd /comfyui/custom_nodes/comfyui-mixlab-nodes \
-    && pip3 install -r requirements.txt \
+    #&& git clone https://github.com/shadowcz007/comfyui-mixlab-nodes.git \
+    #&& cd /comfyui/custom_nodes/comfyui-mixlab-nodes \
+    #&& pip3 install -r requirements.txt \
     && git clone https://github.com/Gourieff/comfyui-reactor-node.git\
     && cd /comfyui/custom_nodes/comfyui-reactor-node \
     && pip3 install -r requirements.txt \
