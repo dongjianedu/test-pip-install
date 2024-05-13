@@ -40,25 +40,31 @@ RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https:/
     && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-Gemini.git \
     && cd /comfyui/custom_nodes/ComfyUI-Gemini \
     && pip3 install -r requirements.txt \
-    #&& git clone https://github.com/shadowcz007/comfyui-mixlab-nodes.git \
-    #&& cd /comfyui/custom_nodes/comfyui-mixlab-nodes \
-    #&& pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ \
+    && git clone https://github.com/shadowcz007/comfyui-mixlab-nodes.git \
+    && cd /comfyui/custom_nodes/comfyui-mixlab-nodes \
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ \
     && git clone https://github.com/Gourieff/comfyui-reactor-node.git\
     && cd /comfyui/custom_nodes/comfyui-reactor-node \
     && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ \
     && git clone https://github.com/jamesWalker55/comfyui-various.git \
     && git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git \
     && cd /comfyui/custom_nodes/ComfyUI-VideoHelperSuite \
     && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ \
     && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git \
     && git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git\
     && cd /comfyui/custom_nodes/comfyui_controlnet_aux \
     && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ \
     && git clone https://github.com/comfyanonymous/ComfyUI_experiments.git \
     && git clone https://github.com/kinfolk0117/ComfyUI_GradientDeepShrink.git \
     && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git \
     && cd /comfyui/custom_nodes/ComfyUI-InstantID \
     && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ \
     && git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git \
     &&  cd /
     #&& cd /comfyui/custom_nodes/ComfyUI_GradientDeepShrink \
