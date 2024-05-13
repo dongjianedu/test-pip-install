@@ -13,7 +13,10 @@ RUN apt-get update && apt-get install -y \
     python3.10 \
     python3-pip \
     git \
-    wget
+    wget \
+    ffmpeg \
+    libsm6 \
+    libxext6
 
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
@@ -27,7 +30,17 @@ WORKDIR /comfyui
 # Install ComfyUI dependencies
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
     && pip3 install --no-cache-dir xformers==0.0.21 \
-    && pip3 install -r requirements.txt
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ \
+    && git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
+    && cd /comfyui/custom_nodes/ComfyUI-Manager \
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ \
+    && git clone https://github.com/kinfolk0117/ComfyUI_GradientDeepShrink.git \
+    && cd /comfyui/custom_nodes/ComfyUI_GradientDeepShrink \
+    && pip3 install -r requirements.txt 
+
+
 
 # Install runpod
 RUN pip3 install runpod requests
