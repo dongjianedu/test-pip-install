@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     wget \
     ffmpeg \
     libsm6 \
-    libxext6
+    libxext6 \
+    && df -h
 
 # Clean up to reduce image size
 RUN apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
@@ -61,17 +62,23 @@ WORKDIR /comfyui
 #    &&  cd /comfyui \
 #    && rm -fr /root/.cache/pip
 
+RUN df -h
+
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
-    && rm -fr /root/.cache/pip
+    && rm -fr /root/.cache/pip \
+    && df -h
+
 
 RUN pip3 install --no-cache-dir xformers==0.0.21 \
     && rm -fr /root/.cache/pip
 RUN pip3 install -r requirements.txt \
-    && rm -fr /root/.cache/pip
+    && rm -fr /root/.cache/pip \
+    && df -h
 
 # Install runpod
 RUN pip3 install runpod requests \
-    && rm -fr /root/.cache/pip
+    && rm -fr /root/.cache/pip \
+    && df -h
 
 # Download checkpoints/vae/LoRA to include in image
 #RUN wget -O models/checkpoints/sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
