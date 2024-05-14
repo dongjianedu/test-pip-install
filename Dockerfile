@@ -28,44 +28,50 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 WORKDIR /comfyui
 
 # Install ComfyUI dependencies
-#RUN cd /comfyui/custom_nodes/ \
-#    && git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
-#    && git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git \
-#    && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-Gemini.git \
-#    && git clone https://github.com/shadowcz007/comfyui-mixlab-nodes.git \
-#    && git clone https://github.com/Gourieff/comfyui-reactor-node.git\
-#    && git clone https://github.com/jamesWalker55/comfyui-various.git \
-#    && git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git \
-#    && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git \
-#    && git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git\
-#    && git clone https://github.com/comfyanonymous/ComfyUI_experiments.git \
-#    && git clone https://github.com/kinfolk0117/ComfyUI_GradientDeepShrink.git \
-#    && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git \
-#    && cd /comfyui/custom_nodes/ComfyUI-InstantID \
-#    && git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
+RUN cd /comfyui/custom_nodes/ \
+    && git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
+    && git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git \
+    && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-Gemini.git \
+    && git clone https://github.com/shadowcz007/comfyui-mixlab-nodes.git \
+    && git clone https://github.com/Gourieff/comfyui-reactor-node.git\
+    && git clone https://github.com/jamesWalker55/comfyui-various.git \
+    && git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git \
+    && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git \
+    && git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git\
+    && git clone https://github.com/comfyanonymous/ComfyUI_experiments.git \
+    && git clone https://github.com/kinfolk0117/ComfyUI_GradientDeepShrink.git \
+    && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git \
+    && cd /comfyui/custom_nodes/ComfyUI-InstantID \
+    && git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 
-#RUN cd /comfyui/custom_nodes/ComfyUI-Manager \
-#    && pip3 install -r requirements.txt \
-#    && cd /comfyui/custom_nodes/ComfyUI-Gemini \
-#    && pip3 install -r requirements.txt \
-#    && cd /comfyui/custom_nodes/comfyui-mixlab-nodes \
-#    && pip3 install -r requirements.txt \
-#    && cd /comfyui/custom_nodes/comfyui-reactor-node \
-#    && pip3 install -r requirements.txt \
-#    && cd /comfyui/custom_nodes/ComfyUI-VideoHelperSuite \
-#    && pip3 install -r requirements.txt \
-#    && cd /comfyui/custom_nodes/comfyui_controlnet_aux \
-#    && pip3 install -r requirements.txt \
-#    && cd /comfyui/custom_nodes/ComfyUI-InstantID \
-#    && pip3 install -r requirements.txt \
-#    &&  cd /
+RUN cd /comfyui/custom_nodes/ComfyUI-Manager \
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ComfyUI-Gemini \
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/comfyui-mixlab-nodes \
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/comfyui-reactor-node \
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ComfyUI-VideoHelperSuite \
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/comfyui_controlnet_aux \
+    && pip3 install -r requirements.txt \
+    && cd /comfyui/custom_nodes/ComfyUI-InstantID \
+    && pip3 install -r requirements.txt \
+    &&  cd /comfyui \
+    && rm -fr /root/.cache/pip
 
-RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-RUN pip3 install --no-cache-dir xformers==0.0.21
-RUN pip3 install -r requirements.txt
+RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
+    && rm -fr /root/.cache/pip
+
+RUN pip3 install --no-cache-dir xformers==0.0.21 \
+    && rm -fr /root/.cache/pip
+RUN pip3 install -r requirements.txt \
+    && rm -fr /root/.cache/pip
 
 # Install runpod
-RUN pip3 install runpod requests
+RUN pip3 install runpod requests \
+    && rm -fr /root/.cache/pip
 
 # Download checkpoints/vae/LoRA to include in image
 #RUN wget -O models/checkpoints/sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
