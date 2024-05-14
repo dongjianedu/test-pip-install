@@ -65,29 +65,15 @@ WORKDIR /comfyui
 RUN df -h
 
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
-    && rm -fr /root/.cache/pip \
-    && df -h \
-    && cd / \
-    && du -h --max-depth=1 \
-    && cd /comfyui
-
-
-RUN pip3 install --no-cache-dir xformers==0.0.21 \
+    && pip3 install --no-cache-dir xformers==0.0.21 \
+    && pip3 install -r requirements.txt \
     && rm -fr /root/.cache/pip \
     && df -h
-RUN pip3 install -r requirements.txt \
-    && rm -fr /root/.cache/pip \
-    && df -h \
-    && cd / \
-    && du -h --max-depth=1 \
-    && cd /comfyui
 
 # Install runpod
 RUN pip3 install runpod requests \
     && rm -fr /root/.cache/pip \
-    && df -h \
-    && cd / \
-    && du -h --max-depth=1
+    && df -h
 
 
 # Download checkpoints/vae/LoRA to include in image
