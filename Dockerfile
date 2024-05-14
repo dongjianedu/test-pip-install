@@ -54,8 +54,8 @@ RUN cd /comfyui/custom_nodes/ComfyUI-Manager \
     && pip3 install -r requirements.txt \
     && cd /comfyui/custom_nodes/ComfyUI-VideoHelperSuite \
     && pip3 install -r requirements.txt \
-    && cd /comfyui/custom_nodes/comfyui_controlnet_aux \
-    && pip3 install -r requirements.txt \
+    #&& cd /comfyui/custom_nodes/comfyui_controlnet_aux \
+    #&& pip3 install -r requirements.txt \
     && cd /comfyui/custom_nodes/ComfyUI-InstantID \
     && pip3 install -r requirements.txt \
     &&  cd /
