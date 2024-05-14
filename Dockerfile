@@ -66,19 +66,23 @@ RUN df -h
 
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
     && rm -fr /root/.cache/pip \
-    && df -h
+    && df -h \
+    && du -h --max-depth=1
 
 
 RUN pip3 install --no-cache-dir xformers==0.0.21 \
-    && rm -fr /root/.cache/pip
-RUN pip3 install -r requirements.txt \
     && rm -fr /root/.cache/pip \
     && df -h
+RUN pip3 install -r requirements.txt \
+    && rm -fr /root/.cache/pip \
+    && df -h \
+    && du -h --max-depth=1
 
 # Install runpod
 RUN pip3 install runpod requests \
     && rm -fr /root/.cache/pip \
-    && df -h
+    && df -h \
+    && du -h --max-depth=1
 
 # Download checkpoints/vae/LoRA to include in image
 #RUN wget -O models/checkpoints/sd_xl_base_1.0.safetensors https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors
