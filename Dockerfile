@@ -28,7 +28,7 @@ RUN git clone https://github.com/comfyanonymous/ComfyUI.git /comfyui
 WORKDIR /comfyui
 
 # Install ComfyUI dependencies
-RUN && cd /comfyui/custom_nodes/ \
+RUN cd /comfyui/custom_nodes/ \
     && git clone https://github.com/ltdrdata/ComfyUI-Manager.git \
     && git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git \
     && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-Gemini.git \
@@ -36,17 +36,15 @@ RUN && cd /comfyui/custom_nodes/ \
     && git clone https://github.com/Gourieff/comfyui-reactor-node.git\
     && git clone https://github.com/jamesWalker55/comfyui-various.git \
     && git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git \
-    && cd /comfyui/custom_nodes/ComfyUI-VideoHelperSuite \
     && git clone https://github.com/Suzie1/ComfyUI_Comfyroll_CustomNodes.git \
     && git clone https://github.com/Fannovel16/comfyui_controlnet_aux.git\
-    && cd /comfyui/custom_nodes/comfyui_controlnet_aux \
     && git clone https://github.com/comfyanonymous/ComfyUI_experiments.git \
     && git clone https://github.com/kinfolk0117/ComfyUI_GradientDeepShrink.git \
     && git clone https://github.com/ZHO-ZHO-ZHO/ComfyUI-InstantID.git \
     && cd /comfyui/custom_nodes/ComfyUI-InstantID \
     && git clone https://github.com/cubiq/ComfyUI_IPAdapter_plus.git
 
-RUN && cd /comfyui/custom_nodes/ComfyUI-Manager \
+RUN cd /comfyui/custom_nodes/ComfyUI-Manager \
     && pip3 install -r requirements.txt \
     && cd /comfyui/custom_nodes/ComfyUI-Gemini \
     && pip3 install -r requirements.txt \
@@ -61,8 +59,6 @@ RUN && cd /comfyui/custom_nodes/ComfyUI-Manager \
     && cd /comfyui/custom_nodes/ComfyUI-InstantID \
     && pip3 install -r requirements.txt \
     &&  cd /
-    #&& cd /comfyui/custom_nodes/ComfyUI_GradientDeepShrink \
-    #&& pip3 install -r requirements.txt
 
 RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
     && pip3 install --no-cache-dir xformers==0.0.21 \
