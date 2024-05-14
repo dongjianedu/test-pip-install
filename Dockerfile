@@ -60,9 +60,9 @@ WORKDIR /comfyui
 #    && pip3 install -r requirements.txt \
 #    &&  cd /
 
-RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
-    && pip3 install --no-cache-dir xformers==0.0.21 \
-    && pip3 install -r requirements.txt
+RUN pip3 install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+RUN pip3 install --no-cache-dir xformers==0.0.21
+RUN pip3 install -r requirements.txt
 
 # Install runpod
 RUN pip3 install runpod requests
