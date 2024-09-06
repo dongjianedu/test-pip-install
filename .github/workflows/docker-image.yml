@@ -15,16 +15,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/runpod-worker-comfy:v0.1.1
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/dongjiandocker/sd-api:v3.0.4
     - name: Docker login
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
     - name: Docker image push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/runpod-worker-comfy:v0.1.1
+      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/dongjiandocker/sd-api:v3.0.4
     - name: Docker image tag
-      run: docker tag  ${{ secrets.DOCKERHUB_USERNAME }}/runpod-worker-comfy:v0.1.1  deejac-docker.pkg.coding.net/zhanyin-ntr/test/runpod-worker-comfy:v0.1.1
+      run: docker tag  ${{ secrets.DOCKERHUB_USERNAME }}/dongjiandocker/sd-api:v3.0.4  deejac-docker.pkg.coding.net/zhanyin-ntr/test/dongjiandocker/sd-api:v3.0.4
     - name: Docker login
       uses: docker/login-action@v3
       with:
@@ -32,7 +32,7 @@ jobs:
         password: ${{ secrets.CODING_PASSWORD }}
         registry: deejac-docker.pkg.coding.net
     - name: Docker image push
-      run: docker push deejac-docker.pkg.coding.net/zhanyin-ntr/test/runpod-worker-comfy:v0.1.1
+      run: docker push deejac-docker.pkg.coding.net/zhanyin-ntr/test/dongjiandocker/sd-api:v3.0.4
 
 
 

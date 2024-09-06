@@ -7,15 +7,20 @@ import os
 from requests.adapters import HTTPAdapter, Retry
 from datetime import datetime
 import warnings
-from PIL import Image
+from PIL import Image, ImageFilter
 import base64
 import torch
 from io import BytesIO
 from PIL import ImageChops
 import uuid
+import threading
+import signal
+import sys
+import numpy as np
 from runpod.serverless.utils.rp_upload import upload_image
-LOCAL_URL = "http://127.0.0.1:3000/sdapi/v1"
+LOCAL_URL = "http://pi.mytunnel.top:3000/sdapi/v1"
 SAM_URL = "http://127.0.0.1:8080/process"
+no_face_url = "https://f005.backblazeb2.com/file/demo-image/no_face.png"
 out_dir = 'api_out'
 out_dir_t2i = os.path.join(out_dir, 'txt2img')
 automatic_session = requests.Session()
@@ -42,7 +47,12 @@ def wait_for_service(url):
         time.sleep(0.2)
 
 
-
+def apply_glass_effect(image_path, radius):
+    # 打开图像
+    img = Image.open(image_path)
+    # 应用毛玻璃效果
+    img_blurred = img.filter(ImageFilter.GaussianBlur(radius))
+    return img_blurred
 
 def run_inference(inference_request):
     '''
@@ -144,6 +154,39 @@ def read_json_from_file(file_path):
         data = json.load(file)
     return data
 
+def merge_images(save_path, image_path, body_sam_masks_path):
+    # Load the images
+    save_image = Image.open(save_path).convert('RGB')
+    image = Image.open(image_path).convert('RGB')
+    mask_image = Image.open(body_sam_masks_path).convert('RGB')
+
+    # Resize the images to the same size
+    max_size = (max(save_image.size[0], image.size[0], mask_image.size[0]),
+                max(save_image.size[1], image.size[1], mask_image.size[1]))
+    save_image = save_image.resize(max_size)
+    image = image.resize(max_size)
+    mask_image = mask_image.resize(max_size)
+
+    # Convert the images to numpy arrays
+    save_image_array = np.array(save_image)
+    image_array = np.array(image)
+    mask_array = np.array(mask_image)
+
+
+
+    # Create a new array based on the condition
+    result_array = np.where(mask_array == 255, save_image_array, image_array)
+
+    # Convert the resulting array back to an image
+    result_image = Image.fromarray(result_array.astype(np.uint8))
+
+    # Save the resulting image
+    result_path = save_path.replace('.png', '_merged.png')
+    result_image.save(result_path)
+
+    return result_path
+
+
 # ---------------------------------------------------------------------------- #
 #                                RunPod Handler                                #
 # ---------------------------------------------------------------------------- #
@@ -151,7 +194,7 @@ def handler(event):
     '''
     This is the handler function that will be called by the serverless.
     '''
-    file_path = '/sd_input_template.txt'
+    file_path = './sd_input_template.txt'
     input = event["input"]
 
     input_json_row = read_json_from_file(file_path)
@@ -159,6 +202,7 @@ def handler(event):
 
 
     init_images =   input['image']
+    prompt = input['prompt']
     if init_images.startswith('data:image'):
         init_images_base64 = init_images.split(',')[1]
         image_bytes = base64.b64decode(init_images_base64)
@@ -169,20 +213,51 @@ def handler(event):
     else:
         init_images_base64 = url_to_base64(init_images)
     image_path = decode_and_save_base64(init_images_base64)
+
     data = {
-        "image_path": image_path
+        "image_path": image_path,
+        "base64": init_images_base64
     }
     start_time = time.time()
     response = requests.post(SAM_URL, json=data)
+    response_json = response.json()
+    mask_status = response_json['mask_status']
+    if mask_status==False:
+        return[no_face_url, '']
+    mask_image_path = response_json['path']
+    white_image_path = response_json['body_cropped_image_path']
+    face_average_brightness = response_json['face_average_brightness']
+    body_sam_masks_path = response_json['body_sam_masks_path']
+    print('white_image_path :'+white_image_path)
+    white_image_base64 = encode_file_to_base64(white_image_path)
+    average_brightness = response_json['average_brightness']
+    print('average_brightness :'+str(average_brightness))
     end_time = time.time()
     print(f"Sam Time taken: {end_time - start_time}")
-    mask_image_path = response.text
     mask_base64 =  encode_file_to_base64(mask_image_path)
+
+    if prompt:
+        input_json['prompt'] = prompt
+
+    print('prompt :' + input_json['prompt'])
     input_json['mask'] = mask_base64
-    input_json['init_images'] = [init_images_base64]
-    input_json['alwayson_scripts']['controlnet']['args'][0]['input_image'] = init_images_base64
-    input_json['alwayson_scripts']['controlnet']['args'][0]['model'] = 'control_v11p_sd15_openpose [cab727d4]'
-    input_json['alwayson_scripts']['controlnet']['args'][0]['module'] = 'openpose_full'
+    #input_json['init_images'] = [init_images_base64]
+    input_json['init_images'] = [white_image_base64]
+    input_json['alwayson_scripts']['controlnet']['args'][0]['input_image'] = white_image_base64
+    input_json['alwayson_scripts']['controlnet']['args'][1]['input_image'] = white_image_base64
+
+    # if(average_brightness > 50):
+    #     input_json['inpainting_fill'] = 1
+    # else:
+    #     input_json['inpainting_fill'] = 0
+    input_json['inpainting_fill'] = 0
+    print('inpainting_fill :' + str(input_json['inpainting_fill']))
+    #input_json['alwayson_scripts']['controlnet']['args'][0]['model'] = 'control_v11p_sd15_openpose [cab727d4]'
+    #input_json['alwayson_scripts']['controlnet']['args'][0]['model'] = 'control_v11f1p_sd15_depth [cfd03158]'
+
+
+
+    #input_json['alwayson_scripts']['controlnet']['args'][0]['module'] = 'openpose_full'
     start_time = time.time()
     #json = run_inference(event["input"])
     json = run_inference(input_json)
@@ -192,9 +267,37 @@ def handler(event):
         save_path =  decode_and_save_base64(image)
         if index == 0:
             break
-    presigned_url =  upload_image(event['id'],save_path)
-    print(save_path)
-    return presigned_url
+    save_path = merge_images(save_path, image_path, body_sam_masks_path)
+    #clean_url = upload_image(event['id'], save_path)
+    #apply_glass_effect(save_path, 10).save(save_path)
+    #blur_url =  upload_image(event['id'],save_path)
+    #print(save_path)
+    #return [blur_url,clean_url]
+    return save_path
+
+def start_serverless_function_in_thread():
+    # This function will be run in a separate thread
+    runpod.serverless.start({"handler": handler})
+
+def _signal_handler(signalnum, frame):
+    print(f"Received signal {signalnum}, exiting...")
+    sys.exit(0)
+def main():
+    '''
+    This is the main function that will be called by the serverless.
+    '''
+    # Check if the service is ready to receive requests
+    wait_for_service(url=f'{LOCAL_URL}/txt2img')
+
+    wait_for_service(url=f'{SAM_URL}')
+    print("WebUI API Service is ready. Starting RunPod...")
+
+    signal.signal(signal.SIGINT, _signal_handler)
+
+    # Start the serverless function in a separate thread
+    thread = threading.Thread(target=start_serverless_function_in_thread)
+    thread.start()
+    thread.join()
 
 
 if __name__ == "__main__":
